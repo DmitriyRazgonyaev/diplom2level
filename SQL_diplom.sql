@@ -1,7 +1,13 @@
 --TASK 1
-select count(*) as orders_in_delivery, c.login as courier from "Orders" o
-    left join "Couriers" c on o."courierId" = c.id
-    where o."inDelivery" is true group by (c.login);
+SELECT c.login, COUNT(o.id) AS "number_of_orders"
+FROM "Couriers" AS c
+LEFT JOIN "Orders" AS o ON c.id = o."courierId"
+WHERE o."inDelivery" = true
+GROUP BY c.login;
+
+--Итоговый запрос для командной строки:
+SELECT c.login, COUNT(o.id) AS "number_of_orders" FROM "Couriers" AS c LEFT JOIN "Orders" AS o ON c.id = o."courierId"WHERE o."inDelivery" = true
+GROUP BY c.login;
 
 --TASK 2
 SELECT track,
@@ -13,3 +19,5 @@ SELECT track,
                END AS status
 FROM "Orders";
 
+--Итоговый запрос для командной строки:
+SELECT track, CASE WHEN finished = true THEN 2 WHEN cancelled = true THEN -1 WHEN "inDelivery" = true THEN 1 ELSE 0 END AS status FROM "Orders";
